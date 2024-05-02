@@ -1,7 +1,7 @@
 import telebot
 import os
 from config import keys
-from extensions import APIException, Converter
+from extensions import APIException, Converter, PriceinRub
 from digitize import Exact
 from dotenv import load_dotenv, find_dotenv
 
@@ -20,6 +20,8 @@ def values(message: telebot.types.Message):
         text = "\n".join((text, key, ))
     bot.reply_to(message, text)
 
+
+
 @bot.message_handler(content_types=['text', ])
 def converter(message: telebot.types.Message):
     try:
@@ -32,6 +34,7 @@ def converter(message: telebot.types.Message):
         quote = values[1].lower()
         amount = values[2]
         priceonlyodnogo = Converter.get_price(base, quote, amount)
+        priceinrub = PriceinRub.priceinrubf(base)
     except APIException as e:
         bot.reply_to(message, f'Ошибка пользвателя\n{e}')
     except Exception as e:
@@ -39,7 +42,7 @@ def converter(message: telebot.types.Message):
     else:
         var = Exact
         total_base = (var.discharge(float(priceonlyodnogo) * float(amount)))
-        text = f'Цена {amount} {base} в {quote} - {total_base}'
+        text = f'Цена {amount} {base} в {quote} - {total_base}\nЦена 1го {base} в {priceinrub}'
         bot.send_message(message.chat.id, text)
 
 bot.polling()
