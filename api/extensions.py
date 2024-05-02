@@ -30,4 +30,19 @@ class Converter():
         r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={base_ticker}&tsyms={quote_ticker}')
         priceonlyodnogo = json.loads(r.content)[keys[quote]]
 
+
         return priceonlyodnogo
+
+class PriceinRub():
+
+    @staticmethod
+    def priceinrubf(base:str):
+        try:
+            base_ticker = keys[base]
+        except KeyError:
+            raise APIException(f'Не удалось обработать валюту {base_ticker}')
+
+        r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={base_ticker}&tsyms=RUB')
+        priceinrub = json.loads(r.content)
+
+        return priceinrub
