@@ -34,7 +34,7 @@ def converter(message: telebot.types.Message):
         quote = values[1].lower()
         amount = values[2]
         priceonlyodnogo = Converter.get_price(base, quote, amount)
-        priceinrub = PriceinRub.priceinrubf(base)
+        valueinrub = PriceinRub.priceinrubf(base)
     except APIException as e:
         bot.reply_to(message, f'Ошибка пользвателя\n{e}')
     except Exception as e:
@@ -42,7 +42,8 @@ def converter(message: telebot.types.Message):
     else:
         var = Exact
         total_base = (var.discharge(float(priceonlyodnogo) * float(amount)))
-        text = f'Цена {amount} {base} в {quote} - {total_base}\nЦена 1го {base} в {priceinrub}'
+        valueinru = (var.discharge(valueinrub))
+        text = f'Цена {amount} {base} в {quote} - {total_base}\nЦена 1го {base} в рублях - {valueinru}'
         bot.send_message(message.chat.id, text)
 
 bot.polling()

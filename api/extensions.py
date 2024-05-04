@@ -44,5 +44,6 @@ class PriceinRub():
 
         r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={base_ticker}&tsyms=RUB')
         priceinrub = json.loads(r.content)
+        valueinrub = priceinrub["RUB"]
 
-        return priceinrub
+        return valueinrub
